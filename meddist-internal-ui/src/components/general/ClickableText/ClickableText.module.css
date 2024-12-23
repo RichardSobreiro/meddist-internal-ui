@@ -1,0 +1,32 @@
+/** @format */
+
+.small_secondary {
+  cursor: pointer;
+  color: var(--secondary-color); /* Example color */
+  font-size: var(--font-small); /* Default font size */
+  line-height: 1.5;
+  padding: 8px 0px;
+  border: none;
+  background: none;
+  text-decoration: underline;
+  display: flex; /* Keeps the element in line with text */
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.small_primary {
+  cursor: pointer;
+  color: var(--primary-color); /* Example color */
+  font-size: var(--font-small); /* Default font size */
+  line-height: 1.5;
+  padding: 8px 0px;
+  border: none;
+  background: none;
+  text-decoration: underline;
+  display: flex; /* Keeps the element in line with text */
+  align-items: center;
+  gap: 0.5rem;
+}
+.small_primary:hover {
+  color: var(--primary-color-hover); /* Example color */
+}

@@ -1,0 +1,13 @@
+/** @format */
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensures the footer can be optionally pushed to the bottom */
+}
+
+.content {
+  flex: 1; /* Ensures that this div takes up all available space pushing the footer down */
+  display: flex;
+  justify-content: center;
+}

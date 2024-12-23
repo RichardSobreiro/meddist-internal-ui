@@ -1,0 +1,52 @@
+/** @format */
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  --primary-color: #050a43;
+  --primary-color-hover: #0056b3;
+  --primary-color-light: #007bff;
+  --primary-color-light-hover: #71b6ff;
+  --secondary-color: #62e791;
+  --negative-color: #838383;
+  --negative-color-hover: #bababa;
+  --accent-color: #93effd;
+  --disabled-text-color: #838383;
+  --text-color: #ffffff;
+  --background-color: #fff;
+
+  /* Font sizes */
+  --font-small: 0.8rem;
+  --font-medium: 1rem;
+  --font-large: 1.5rem;
+
+  /* Font family */
+  --text-font: "Arial", Helvetica, sans-serif;
+  --title-font: "Arial", Helvetica, sans-serif;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--primary-color);
+  background: var(--background-color);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
