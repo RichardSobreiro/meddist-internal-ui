@@ -9,6 +9,7 @@ import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import { useSpinner } from "@/context/SpinnerContext ";
+import { useToast } from "@/context/ToastContext";
 
 interface FormValues {
   username: string | undefined;
@@ -25,6 +26,7 @@ const Login: React.FC = () => {
     rememberMe: Yup.boolean(),
   });
   const { showSpinner, hideSpinner } = useSpinner();
+  const { addToast } = useToast();
 
   const initialValues: FormValues = {
     username: "",
@@ -44,7 +46,7 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (authContext.user != null) {
-      router.push("/");
+      router.push("/produtos");
     }
   }, [authContext.user, router]);
 
@@ -62,15 +64,15 @@ const Login: React.FC = () => {
               password: values.password,
               rememberMe: values.rememberMe,
             });
-            console.log("Login successful:");
-            router.push("/");
+            addToast(`Olá`, "success");
+            router.push("/produtos");
           } catch (error) {
             if (error instanceof Error) {
               console.error("Login failed:", error.message);
-              alert("Failed to login: " + error.message);
+              addToast(`Failed to login: ${error.message}`, "error");
             } else {
               console.error("Login failed:", error);
-              alert("Failed to login: An unknown error occurred");
+              addToast(`Failed to login: An unknown error occurred`, "error");
             }
           } finally {
             setSubmitting(false);
