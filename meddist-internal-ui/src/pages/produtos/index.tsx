@@ -1,7 +1,7 @@
 /** @format */
 
 import Layout from "@/components/Layout";
-import Products from "@/components/Products";
+import ProductsList from "@/components/Products";
 import Head from "next/head";
 
 export default function Produtos() {
@@ -19,7 +19,7 @@ export default function Produtos() {
         <meta name="language" content="pt-BR" />
       </Head>
       <Layout renderSideMenu={true}>
-        <Products />
+        <ProductsList />
       </Layout>
     </>
   );
