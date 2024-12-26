@@ -13,6 +13,9 @@
   transform: translateX(-100%);
   transition: transform 0.3s ease;
   z-index: 999;
+
+  display: flex;
+  flex-direction: column; /* Ensure column layout for proper alignment */
 }
 
 .sideMenu.open {
@@ -37,6 +40,10 @@
   list-style: none;
 }
 
+.menuitem :hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
 .menuItem a {
   display: flex;
   align-items: center;
@@ -59,6 +66,25 @@
 .label {
   flex-grow: 1;
   text-align: left;
+}
+
+.logoutContainer {
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.logoutContainer:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.logoutIcon {
+  margin-right: 10px;
+  font-size: 20px;
 }
 
 @media (min-width: 769px) {

@@ -6,12 +6,17 @@ import SideMenu from "./SideMenu";
 
 interface Props {
   children: ReactNode;
+  renderSideMenu: boolean;
 }
 
-const Layout: React.FC<Props> = ({ children }) => {
+const Layout: React.FC<Props> = ({ children, renderSideMenu }) => {
   return (
     <div className={styles.layout}>
-      <SideMenu />
+      {renderSideMenu && (
+        <div className={styles.sideMenuContainer}>
+          <SideMenu />
+        </div>
+      )}
       <main className={styles.content}>{children}</main>
     </div>
   );

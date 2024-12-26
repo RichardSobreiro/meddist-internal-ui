@@ -18,7 +18,7 @@ export default function Home() {
         <meta name="keywords" content="meddist, portal" />
         <meta name="language" content="pt-BR" />
       </Head>
-      <Layout>
+      <Layout renderSideMenu={false}>
         <Login />
       </Layout>
     </>

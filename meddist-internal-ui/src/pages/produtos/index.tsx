@@ -18,7 +18,7 @@ export default function Produtos() {
         <meta name="keywords" content="meddist, portal" />
         <meta name="language" content="pt-BR" />
       </Head>
-      <Layout>
+      <Layout renderSideMenu={true}>
         <Products />
       </Layout>
     </>

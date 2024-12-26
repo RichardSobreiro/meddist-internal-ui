@@ -2,12 +2,16 @@
 
 .layout {
   display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* Ensures the footer can be optionally pushed to the bottom */
+  min-height: 100vh;
+}
+
+.sideMenuContainer {
+  flex: 0 0 250px; /* Reserve space for the SideMenu */
+  transition: transform 0.3s ease;
 }
 
 .content {
-  flex: 1; /* Ensures that this div takes up all available space pushing the footer down */
+  flex: 1;
   display: flex;
   justify-content: center;
 }

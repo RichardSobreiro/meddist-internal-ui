@@ -14,8 +14,10 @@ import {
   faUsers,
   faUserTie,
   faBuilding,
+  faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
 
 const menuItems = [
   { label: "Produtos", link: "/produtos", icon: faBox },
@@ -31,6 +33,7 @@ const menuItems = [
 const SideMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const sideMenuRef = useRef<HTMLDivElement>(null);
+  const authContext = useAuth();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -57,6 +60,10 @@ const SideMenu: React.FC = () => {
     };
   }, [isOpen]);
 
+  const handleLogout = () => {
+    authContext.logout();
+  };
+
   return (
     <>
       {/* Hamburger menu button */}
@@ -81,6 +88,10 @@ const SideMenu: React.FC = () => {
             </li>
           ))}
         </ul>
+        <div className={styles.logoutContainer} onClick={handleLogout}>
+          <FontAwesomeIcon icon={faSignOutAlt} className={styles.logoutIcon} />
+          <span>Sair</span>
+        </div>
       </nav>
     </>
   );
