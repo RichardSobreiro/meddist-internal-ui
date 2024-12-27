@@ -5,7 +5,6 @@ import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik";
 import * as Yup from "yup";
 import InputMask from "react-input-mask";
 import styles from "./Login.module.css"; // Ensure you have this CSS module
-import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import { useSpinner } from "@/context/SpinnerContext ";
@@ -135,18 +134,3 @@ const Login: React.FC = () => {
 };
 
 export default Login;
-
-axios.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
-// Optionally, handle 401 Unauthorized responses here by attempting to refresh tokens

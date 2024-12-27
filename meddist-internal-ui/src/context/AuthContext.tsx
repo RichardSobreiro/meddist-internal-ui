@@ -77,9 +77,24 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         email: credentials.username,
         password: credentials.password,
       });
-      const accessToken: string = response.data.refresh_token;
+      const accessToken: string = response.data.access_token;
       const refreshToken: string = response.data.refresh_token;
       setAuthenticationState(accessToken, refreshToken, credentials.rememberMe);
+      axios.interceptors.request.use(
+        (config) => {
+          let token = localStorage.getItem("accessToken");
+          if (!token) {
+            token = sessionStorage.getItem("accessToken");
+          }
+          if (token) {
+            config.headers["Authorization"] = `Bearer ${token}`;
+          }
+          return config;
+        },
+        (error) => {
+          return Promise.reject(error);
+        }
+      );
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         throw new Error(
@@ -111,6 +126,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         refreshTokenLocalStorage,
         true
       );
+      axios.interceptors.request.use(
+        (config) => {
+          config.headers["Authorization"] = `Bearer ${accessTokenLocalStorage}`;
+          return config;
+        },
+        (error) => {
+          return Promise.reject(error);
+        }
+      );
     } else {
       const accessTokenSessionStorage = sessionStorage.getItem("accessToken");
       const refreshTokenSessionStorage = sessionStorage.getItem("refreshToken");
@@ -119,6 +143,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
           accessTokenSessionStorage,
           refreshTokenSessionStorage,
           false
+        );
+        axios.interceptors.request.use(
+          (config) => {
+            config.headers[
+              "Authorization"
+            ] = `Bearer ${accessTokenSessionStorage}`;
+            return config;
+          },
+          (error) => {
+            return Promise.reject(error);
+          }
         );
       } else {
         logout();

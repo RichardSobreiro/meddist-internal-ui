@@ -7,6 +7,8 @@ import axiosInstance from "@/services/axiosInstance";
 import { useSpinner } from "@/context/SpinnerContext ";
 import { useToast } from "@/context/ToastContext";
 import axios from "axios";
+import { useRouter } from "next/router";
+import ClickableText from "../general/ClickableText";
 
 interface Product {
   id: string;
@@ -23,6 +25,7 @@ const ProductList: React.FC = () => {
   const [totalPages, setTotalPages] = useState(0);
   const { showSpinner, hideSpinner } = useSpinner();
   const { addToast } = useToast();
+  const router = useRouter();
 
   const fetchProducts = useCallback(
     async (page: number) => {
@@ -34,7 +37,6 @@ const ProductList: React.FC = () => {
         setProducts(response.data.products);
         setTotalPages(response.data.totalPages);
         setCurrentPage(page);
-        addToast("Lista atualizada.", "success");
       } catch (error) {
         if (axios.isAxiosError(error) && error.response?.data?.message) {
           console.error("Erro:", error.response?.data?.message);
@@ -55,11 +57,34 @@ const ProductList: React.FC = () => {
 
   useEffect(() => {
     fetchProducts(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const navigateToCreateProduct = () => {
+    router.push("/produtos/criar");
+  };
 
   return (
     <div className={styles.container}>
-      <h1>Produtos</h1>
+      <div className={styles.header}>
+        <div>
+          <h1>Produtos</h1>
+          <ClickableText
+            text={"Gerenciar Categorias"}
+            onClick={function (): void {
+              router.push("/produtos/categorias");
+            }}
+            className={"small_primary"}
+          />
+        </div>
+
+        <button
+          className={styles.createButton}
+          onClick={navigateToCreateProduct}
+        >
+          Criar Produto
+        </button>
+      </div>
       <table className={styles.table}>
         <thead>
           <tr>
