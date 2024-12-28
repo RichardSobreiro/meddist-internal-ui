@@ -7,6 +7,7 @@ import axiosInstance from "@/services/axiosInstance";
 import { useSpinner } from "@/context/SpinnerContext ";
 import { useToast } from "@/context/ToastContext";
 import { useRouter } from "next/router";
+import ClickableText from "@/components/general/ClickableText";
 
 interface Category {
   id: string;
@@ -27,9 +28,7 @@ const CategoriesList: React.FC = () => {
     async (page: number) => {
       try {
         showSpinner();
-        const response = await axiosInstance.get(
-          `http://localhost:3003/categories?page=${page}`
-        );
+        const response = await axiosInstance.get(`/categories?page=${page}`);
         setCategories(response.data.categories);
         setTotalPages(response.data.totalPages);
         setCurrentPage(page);
@@ -49,11 +48,11 @@ const CategoriesList: React.FC = () => {
   }, []);
 
   const navigateToCreateCategory = () => {
-    router.push("/categorias/criar");
+    router.push("/produtos/categorias/criar");
   };
 
-  const navigateToManageSubcategories = (categoryId: string) => {
-    router.push(`/categorias/${categoryId}/subcategorias`);
+  const navigateToEditCategory = (categoryId: string) => {
+    router.push(`/produtos/categorias/${categoryId}/editar`);
   };
 
   return (
@@ -61,6 +60,13 @@ const CategoriesList: React.FC = () => {
       <div className={styles.header}>
         <div>
           <h1>Categorias</h1>
+          <ClickableText
+            text={"Produtos"}
+            onClick={function (): void {
+              router.push("/produtos");
+            }}
+            className={"small_primary"}
+          />
         </div>
         <button
           className={styles.createButton}
@@ -74,22 +80,22 @@ const CategoriesList: React.FC = () => {
           <tr>
             <th>Nome</th>
             <th>Descrição</th>
-            <th>Categoria Pai</th>
+            {/* <th>Categoria Pai</th> */}
             <th>Ações</th>
           </tr>
         </thead>
         <tbody>
-          {categories.map((category) => (
+          {categories?.map((category) => (
             <tr key={category.id}>
               <td>{category.name}</td>
               <td>{category.description || "-"}</td>
-              <td>{category.parent?.name || "Nenhuma"}</td>
+              {/* <td>{category.parent?.name || "Nenhuma"}</td> */}
               <td>
                 <button
                   className={styles.manageButton}
-                  onClick={() => navigateToManageSubcategories(category.id)}
+                  onClick={() => navigateToEditCategory(category.id)}
                 >
-                  Gerenciar Subcategorias
+                  Editar
                 </button>
               </td>
             </tr>
