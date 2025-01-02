@@ -9,6 +9,7 @@ import { useToast } from "@/context/ToastContext";
 import axios from "axios";
 import { useRouter } from "next/router";
 import ClickableText from "../general/ClickableText";
+import ProductCard from "./ProductCard";
 
 interface Product {
   id: string;
@@ -16,7 +17,7 @@ interface Product {
   description: string;
   brand: string;
   price: number;
-  quantity: number;
+  images: { url: string; isPrimary: boolean }[];
 }
 
 const ProductList: React.FC = () => {
@@ -31,9 +32,7 @@ const ProductList: React.FC = () => {
     async (page: number) => {
       try {
         showSpinner();
-        const response = await axiosInstance.get(
-          `http://localhost:3003/products?page=${page}`
-        );
+        const response = await axiosInstance.get(`/products?page=${page}`);
         setProducts(response.data.products);
         setTotalPages(response.data.totalPages);
         setCurrentPage(page);
@@ -71,9 +70,7 @@ const ProductList: React.FC = () => {
           <h1>Produtos</h1>
           <ClickableText
             text={"Gerenciar Categorias"}
-            onClick={function (): void {
-              router.push("/produtos/categorias");
-            }}
+            onClick={() => router.push("/produtos/categorias")}
             className={"small_primary"}
           />
         </div>
@@ -85,28 +82,24 @@ const ProductList: React.FC = () => {
           Criar Produto
         </button>
       </div>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Descrição</th>
-            <th>Marca</th>
-            <th>Preço</th>
-            <th>Quantidade</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product) => (
-            <tr key={product.id}>
-              <td>{product.name}</td>
-              <td>{product.description}</td>
-              <td>{product.brand}</td>
-              <td>{product.price.toFixed(2)}</td>
-              <td>{product.quantity}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+      <div className={styles.grid}>
+        {products.map((product) => {
+          const primaryImage =
+            product.images.find((image) => image.isPrimary)?.url || "";
+          return (
+            <ProductCard
+              key={product.id}
+              id={product.id}
+              name={product.name}
+              brand={product.brand}
+              price={product.price}
+              imageUrl={primaryImage}
+            />
+          );
+        })}
+      </div>
+
       <PaginationControls
         currentPage={currentPage}
         totalPages={totalPages}

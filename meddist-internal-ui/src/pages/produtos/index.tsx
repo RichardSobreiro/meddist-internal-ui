@@ -4,7 +4,7 @@ import Layout from "@/components/Layout";
 import ProductsList from "@/components/Products";
 import Head from "next/head";
 
-export default function Produtos() {
+export default function Products() {
   return (
     <>
       <Head>

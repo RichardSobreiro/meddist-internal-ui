@@ -5,12 +5,9 @@ import ProductForm from "@/components/Products/ProductForm";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-export default function CreateProductPage() {
+export default function UpdateProduct() {
   const router = useRouter();
-
-  const handleProductCreationSuccess = (productId?: string) => {
-    router.push(`/produtos/${productId}/editar`);
-  };
+  const { id } = router.query;
   return (
     <>
       <Head>
@@ -26,8 +23,9 @@ export default function CreateProductPage() {
       </Head>
       <Layout renderSideMenu={true}>
         <ProductForm
+          isEditMode={true}
+          productId={id as string}
           onCancel={() => router.push("/produtos")}
-          onSubmitSuccess={handleProductCreationSuccess}
         />
       </Layout>
     </>
