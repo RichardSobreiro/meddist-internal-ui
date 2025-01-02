@@ -33,16 +33,20 @@ const menuItems = [
 const SideMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const sideMenuRef = useRef<HTMLDivElement>(null);
+  const toggleButtonRef = useRef<HTMLDivElement>(null);
+
   const authContext = useAuth();
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((prevState) => !prevState);
   };
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
       sideMenuRef.current &&
-      !sideMenuRef.current.contains(event.target as Node)
+      !sideMenuRef.current.contains(event.target as Node) &&
+      toggleButtonRef.current &&
+      !toggleButtonRef.current.contains(event.target as Node)
     ) {
       setIsOpen(false);
     }
@@ -66,12 +70,14 @@ const SideMenu: React.FC = () => {
 
   return (
     <>
-      {/* Hamburger menu button */}
-      <div className={styles.hamburger} onClick={toggleMenu}>
+      <div
+        ref={toggleButtonRef}
+        className={styles.hamburger}
+        onClick={toggleMenu}
+      >
         <FontAwesomeIcon icon={isOpen ? faTimes : faBars} />
       </div>
 
-      {/* Side menu */}
       <nav
         ref={sideMenuRef}
         className={`${styles.sideMenu} ${isOpen ? styles.open : ""}`}

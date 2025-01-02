@@ -13,9 +13,8 @@
   transform: translateX(-100%);
   transition: transform 0.3s ease;
   z-index: 999;
-
   display: flex;
-  flex-direction: column; /* Ensure column layout for proper alignment */
+  flex-direction: column;
 }
 
 .sideMenu.open {
@@ -40,7 +39,7 @@
   list-style: none;
 }
 
-.menuitem :hover {
+.menuItem:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -63,11 +62,6 @@
   text-align: center;
 }
 
-.label {
-  flex-grow: 1;
-  text-align: left;
-}
-
 .logoutContainer {
   display: flex;
   align-items: center;
@@ -87,13 +81,27 @@
   font-size: 20px;
 }
 
+@media (max-width: 768px) {
+  .sideMenu {
+    position: fixed;
+    transform: translateX(-100%);
+    width: 250px;
+  }
+
+  .sideMenu.open {
+    transform: translateX(0);
+  }
+
+  .hamburger {
+    display: block;
+  }
+}
+
 @media (min-width: 769px) {
   .sideMenu {
-    transform: translateX(0);
     position: fixed;
+    transform: translateX(0);
     width: 250px;
-    z-index: auto;
-    height: 100vh;
   }
 
   .hamburger {

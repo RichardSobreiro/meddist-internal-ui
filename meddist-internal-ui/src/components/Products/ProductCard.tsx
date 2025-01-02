@@ -7,10 +7,11 @@ import styles from "./ProductCard.module.css";
 import { formatToBrazilianPrice } from "./ProductForm";
 
 interface ProductCardProps {
-  id: string; // Added id to navigate to edit page
+  id: string;
   name: string;
   brand: string;
   price: number;
+  category: string;
   imageUrl?: string;
 }
 
@@ -19,6 +20,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   name,
   brand,
   price,
+  category,
   imageUrl,
 }) => {
   const router = useRouter();
@@ -44,6 +46,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       </div>
       <div className={styles.content}>
         <h3 className={styles.name}>{name}</h3>
+        <p className={styles.category}>{category}</p>{" "}
         <p className={styles.brand}>{brand}</p>
         <p className={styles.price}>R$ {formatToBrazilianPrice(price)}</p>
       </div>

@@ -6,15 +6,23 @@
 }
 
 .sideMenuContainer {
-  flex: 0 0 250px; /* Reserve space for the SideMenu */
-  transition: transform 0.3s ease;
+  flex: 0 0 250px;
 }
 
 .content {
   flex: 1;
-  flex-grow: 1;
-
   display: flex;
   justify-content: center;
   overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .sideMenuContainer {
+    flex: 0;
+  }
+
+  .content {
+    flex: 1;
+    padding: 20px;
+  }
 }

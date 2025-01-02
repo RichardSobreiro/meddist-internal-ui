@@ -52,6 +52,13 @@
   margin: 10px 0;
 }
 
+.category {
+  font-size: 14px;
+  font-style: italic;
+  color: #444;
+  margin: 5px 0;
+}
+
 .brand {
   font-size: 14px;
   color: #666;

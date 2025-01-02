@@ -10,6 +10,8 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import ClickableText from "../general/ClickableText";
 import ProductCard from "./ProductCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 interface Product {
   id: string;
@@ -18,12 +20,21 @@ interface Product {
   brand: string;
   price: number;
   images: { url: string; isPrimary: boolean }[];
+  categories: { id: string; name: string }[];
+}
+
+interface Category {
+  id: string;
+  name: string;
 }
 
 const ProductList: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const { showSpinner, hideSpinner } = useSpinner();
   const { addToast } = useToast();
   const router = useRouter();
@@ -32,7 +43,13 @@ const ProductList: React.FC = () => {
     async (page: number) => {
       try {
         showSpinner();
-        const response = await axiosInstance.get(`/products?page=${page}`);
+        const params: { page: number; search?: string; category?: string } = {
+          page,
+        };
+        if (searchTerm) params.search = searchTerm;
+        if (selectedCategory) params.category = selectedCategory;
+
+        const response = await axiosInstance.get("/products", { params });
         setProducts(response.data.products);
         setTotalPages(response.data.totalPages);
         setCurrentPage(page);
@@ -51,13 +68,36 @@ const ProductList: React.FC = () => {
         hideSpinner();
       }
     },
-    [addToast, hideSpinner, showSpinner]
+    [addToast, hideSpinner, searchTerm, selectedCategory, showSpinner]
   );
+
+  const fetchCategories = useCallback(async () => {
+    try {
+      const response = await axiosInstance.get("/categories");
+      setCategories(response.data.categories || []);
+    } catch (error) {
+      console.error("Erro ao carregar categorias:", error);
+      addToast("Erro ao carregar categorias.", "error");
+    }
+  }, [addToast]);
 
   useEffect(() => {
     fetchProducts(1);
+    fetchCategories();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategory(e.target.value);
+  };
+
+  const handleSearchSubmit = () => {
+    fetchProducts(1);
+  };
 
   const navigateToCreateProduct = () => {
     router.push("/produtos/criar");
@@ -83,6 +123,36 @@ const ProductList: React.FC = () => {
         </button>
       </div>
 
+      <div className={styles.filters}>
+        <div className={styles.searchBox}>
+          <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
+          <input
+            type="text"
+            placeholder="Buscar por nome, descrição ou marca"
+            value={searchTerm}
+            onChange={handleSearch}
+            className={styles.searchInput}
+          />
+        </div>
+
+        <select
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+          className={styles.categorySelect}
+        >
+          <option value="">Todas as Categorias</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+
+        <button className={styles.searchButton} onClick={handleSearchSubmit}>
+          <FontAwesomeIcon icon={faSearch} />
+        </button>
+      </div>
+
       <div className={styles.grid}>
         {products.map((product) => {
           const primaryImage =
@@ -92,6 +162,7 @@ const ProductList: React.FC = () => {
               key={product.id}
               id={product.id}
               name={product.name}
+              category={product.categories?.[0]?.name || "Sem Categoria"}
               brand={product.brand}
               price={product.price}
               imageUrl={primaryImage}
