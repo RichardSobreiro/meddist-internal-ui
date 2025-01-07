@@ -3,7 +3,7 @@
 import Spinner from "@/components/Spinner";
 import Toast from "@/components/Toast";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
-import { SpinnerProvider, useSpinner } from "@/context/SpinnerContext ";
+import { SpinnerProvider, useSpinner } from "@/context/SpinnerContext";
 import { ToastProvider } from "@/context/ToastContext";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";

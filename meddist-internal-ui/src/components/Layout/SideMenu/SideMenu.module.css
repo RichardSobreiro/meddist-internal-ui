@@ -37,6 +37,7 @@
   align-items: center;
   margin: 15px 0;
   list-style: none;
+  flex-direction: column; /* Ensure submenu aligns below the parent */
 }
 
 .menuItem:hover {
@@ -79,6 +80,51 @@
 .logoutIcon {
   margin-right: 10px;
   font-size: 20px;
+}
+
+.menuLink {
+  display: flex;
+  align-items: center;
+  width: 100%; /* Ensure the link spans the entire width */
+  cursor: pointer;
+}
+
+/** Submenu Styling **/
+.subMenu {
+  list-style: none;
+  padding-left: 30px; /* Indent submenu items */
+  width: 100%; /* Ensure submenu spans the parent width */
+  margin-top: 5px;
+}
+
+.subMenuItem {
+  margin: 5px 10px;
+  display: flex;
+  align-items: center; /* Align dot icon and text */
+  gap: 8px; /* Add space between the dot and text */
+}
+
+.subMenuItem::before {
+  content: "•"; /* Add a dot as the content */
+  font-size: 14px;
+  color: white; /* Match the color to the menu text */
+}
+
+.subMenuItem a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  display: block; /* Ensure links are block-level to take full width */
+  font-size: var(--font-small);
+}
+
+.subMenuItem a:hover {
+  text-decoration: underline;
+}
+
+.chevronIcon {
+  margin-left: auto;
+  font-size: 14px;
 }
 
 @media (max-width: 768px) {

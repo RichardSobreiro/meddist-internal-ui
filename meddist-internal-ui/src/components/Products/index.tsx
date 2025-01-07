@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import styles from "./ProductList.module.css";
 import PaginationControls from "../general/Pagination/PaginationControls";
 import axiosInstance from "@/services/axiosInstance";
-import { useSpinner } from "@/context/SpinnerContext ";
+import { useSpinner } from "@/context/SpinnerContext";
 import { useToast } from "@/context/ToastContext";
 import axios from "axios";
 import { useRouter } from "next/router";

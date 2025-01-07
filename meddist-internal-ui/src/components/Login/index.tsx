@@ -7,7 +7,7 @@ import InputMask from "react-input-mask";
 import styles from "./Login.module.css"; // Ensure you have this CSS module
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
-import { useSpinner } from "@/context/SpinnerContext ";
+import { useSpinner } from "@/context/SpinnerContext";
 import { useToast } from "@/context/ToastContext";
 
 interface FormValues {

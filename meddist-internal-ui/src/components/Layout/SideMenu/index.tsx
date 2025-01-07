@@ -15,11 +15,22 @@ import {
   faUserTie,
   faBuilding,
   faSignOutAlt,
+  faChevronDown,
+  faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 
 const menuItems = [
+  {
+    label: "Empresa",
+    link: "/",
+    icon: faBuilding,
+    subItems: [
+      { label: "Canais de Vendas", link: "/empresa/canais" },
+      { label: "Localizações", link: "/empresa/localizacoes" },
+    ],
+  },
   { label: "Produtos", link: "/produtos", icon: faBox },
   { label: "Pedidos", link: "/", icon: faShoppingCart },
   { label: "Expedição", link: "/", icon: faTruck },
@@ -27,11 +38,13 @@ const menuItems = [
   { label: "Estoque", link: "/", icon: faWarehouse },
   { label: "Usuários", link: "/", icon: faUsers },
   { label: "RH", link: "/", icon: faUserTie },
-  { label: "Empresa", link: "/", icon: faBuilding },
 ];
 
 const SideMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [expandedSections, setExpandedSections] = useState<{
+    [key: string]: boolean;
+  }>({});
   const sideMenuRef = useRef<HTMLDivElement>(null);
   const toggleButtonRef = useRef<HTMLDivElement>(null);
 
@@ -64,6 +77,13 @@ const SideMenu: React.FC = () => {
     };
   }, [isOpen]);
 
+  const toggleSubMenu = (label: string) => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [label]: !prev[label],
+    }));
+  };
+
   const handleLogout = () => {
     authContext.logout();
   };
@@ -85,12 +105,37 @@ const SideMenu: React.FC = () => {
         <ul>
           {menuItems.map((item, index) => (
             <li key={index} className={styles.menuItem}>
-              <Link href={item.link}>
+              <div
+                className={styles.menuLink}
+                onClick={() =>
+                  item.subItems ? toggleSubMenu(item.label) : null
+                }
+              >
                 <span className={styles.icon}>
                   <FontAwesomeIcon icon={item.icon} />
                 </span>
                 <span>{item.label}</span>
-              </Link>
+                {item.subItems && (
+                  <span className={styles.chevronIcon}>
+                    <FontAwesomeIcon
+                      icon={
+                        expandedSections[item.label]
+                          ? faChevronUp
+                          : faChevronDown
+                      }
+                    />
+                  </span>
+                )}
+              </div>
+              {item.subItems && expandedSections[item.label] && (
+                <ul className={styles.subMenu}>
+                  {item.subItems.map((subItem, subIndex) => (
+                    <li key={subIndex} className={styles.subMenuItem}>
+                      <Link href={subItem.link}>{subItem.label}</Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))}
         </ul>

@@ -3,37 +3,30 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import styles from "./CategoryForm.module.css";
+import styles from "./ChannelForm.module.css";
 import axiosInstance from "@/services/axiosInstance";
 import { useToast } from "@/context/ToastContext";
 import { useSpinner } from "@/context/SpinnerContext";
 import { useRouter } from "next/router";
 
-export interface CategoryFormValues {
+export interface ChannelFormValues {
   name: string;
-  description: string;
-  parentId?: string;
+  description?: string;
 }
 
-interface CategoryOption {
-  id: string;
-  name: string;
-}
-
-interface CategoryFormProps {
-  initialValues?: CategoryFormValues;
+interface ChannelFormProps {
+  initialValues?: ChannelFormValues;
   onSubmitSuccess?: () => void;
   isEditMode?: boolean;
-  categoryId?: string;
-  parentCategories?: CategoryOption[];
+  channelId?: string;
   onCancel?: () => void;
 }
 
-const CategoryForm: React.FC<CategoryFormProps> = ({
+const ChannelForm: React.FC<ChannelFormProps> = ({
   initialValues,
   onSubmitSuccess,
   isEditMode = false,
-  categoryId,
+  channelId,
   onCancel,
 }) => {
   const { addToast } = useToast();
@@ -42,14 +35,13 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
   const router = useRouter();
 
   const validationSchema = Yup.object({
-    name: Yup.string().required("O nome da categoria é obrigatório"),
+    name: Yup.string().required("O nome do canal é obrigatório"),
     description: Yup.string().optional(),
-    parentId: Yup.string().optional(),
   });
 
-  const fetchCategory = useCallback(
+  const fetchChannel = useCallback(
     async (
-      categoryId: string,
+      channelId: string,
       setFieldValue: (
         field: string,
         value: unknown,
@@ -58,14 +50,13 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
     ) => {
       try {
         showSpinner();
-        const response = await axiosInstance.get(`/categories/${categoryId}`);
-        const category = response.data;
-        setFieldValue("name", category.name);
-        setFieldValue("description", category.description || "");
-        setFieldValue("parentId", category.parent?.id || "");
+        const response = await axiosInstance.get(`/channels/${channelId}`);
+        const channel = response.data;
+        setFieldValue("name", channel.name);
+        setFieldValue("description", channel.description || "");
       } catch (error) {
-        console.error("Erro ao buscar categoria:", error);
-        addToast("Erro ao carregar categoria. Tente novamente.", "error");
+        console.error("Erro ao buscar canal:", error);
+        addToast("Erro ao carregar canal. Tente novamente.", "error");
       } finally {
         hideSpinner();
       }
@@ -76,14 +67,13 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1>{isEditMode ? "Editar Categoria" : "Criar Categoria"}</h1>
+        <h1>{isEditMode ? "Editar Canal" : "Criar Canal"}</h1>
       </div>
 
       <Formik
         initialValues={{
           name: initialValues?.name || "",
           description: initialValues?.description || "",
-          parentId: initialValues?.parentId || "",
         }}
         enableReinitialize
         validationSchema={validationSchema}
@@ -91,24 +81,24 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
           setIsSubmitting(true);
           try {
             showSpinner();
-            if (isEditMode && categoryId) {
-              await axiosInstance.patch(`/categories/${categoryId}`, values);
-              addToast("Categoria atualizada com sucesso!", "success");
+            if (isEditMode && channelId) {
+              await axiosInstance.patch(`/channels/${channelId}`, values);
+              addToast("Canal atualizado com sucesso!", "success");
 
-              // Reload the updated category data
-              await fetchCategory(categoryId, setFieldValue);
+              // Reload the updated channel data
+              await fetchChannel(channelId, setFieldValue);
             } else {
-              const response = await axiosInstance.post("/categories", values);
-              const createdCategory = response.data; // Assuming the response includes the created category's ID
-              addToast("Categoria criada com sucesso!", "success");
+              const response = await axiosInstance.post("/channels", values);
+              const createdChannel = response.data; // Assuming the response includes the created channel's ID
+              addToast("Canal criado com sucesso!", "success");
               resetForm();
-              router.push(`/produtos/categorias/${createdCategory.id}/editar`);
+              router.push(`/empresa/canais/${createdChannel.id}/editar`);
             }
 
             onSubmitSuccess?.();
           } catch (error) {
-            console.error("Erro ao salvar categoria:", error);
-            addToast("Erro ao salvar categoria. Tente novamente.", "error");
+            console.error("Erro ao salvar canal:", error);
+            addToast("Erro ao salvar canal. Tente novamente.", "error");
           } finally {
             setIsSubmitting(false);
             hideSpinner();
@@ -118,8 +108,8 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
         {({ setFieldValue }) => {
           // eslint-disable-next-line react-hooks/rules-of-hooks
           useEffect(() => {
-            if (isEditMode && categoryId) {
-              fetchCategory(categoryId, setFieldValue);
+            if (isEditMode && channelId) {
+              fetchChannel(channelId, setFieldValue);
             }
           }, [setFieldValue]);
 
@@ -127,7 +117,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
             <Form className={styles.form}>
               <div className={styles.formGroup}>
                 <label className={styles.label} htmlFor="name">
-                  Nome da Categoria
+                  Nome do Canal
                 </label>
                 <Field
                   id="name"
@@ -170,8 +160,8 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
                   {isSubmitting
                     ? "Enviando..."
                     : isEditMode
-                    ? "Salvar Categoria"
-                    : "Criar Categoria"}
+                    ? "Salvar Canal"
+                    : "Criar Canal"}
                 </button>
               </div>
             </Form>
@@ -182,4 +172,4 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
   );
 };
 
-export default CategoryForm;
+export default ChannelForm;

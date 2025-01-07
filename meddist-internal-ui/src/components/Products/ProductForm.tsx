@@ -9,7 +9,7 @@ import { useToast } from "@/context/ToastContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
-import { useSpinner } from "@/context/SpinnerContext ";
+import { useSpinner } from "@/context/SpinnerContext";
 
 interface ProductFormValues {
   name: string;
