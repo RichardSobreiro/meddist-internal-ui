@@ -7,6 +7,9 @@ import { useSpinner } from "@/context/SpinnerContext";
 import { useToast } from "@/context/ToastContext";
 import { useRouter } from "next/router";
 import ClickableText from "@/components/general/ClickableText";
+import { useDevice } from "@/context/DeviceContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 interface Address {
   cep: string;
@@ -30,6 +33,7 @@ const LocationsList: React.FC = () => {
   const { showSpinner, hideSpinner } = useSpinner();
   const { addToast } = useToast();
   const router = useRouter();
+  const { isMobile } = useDevice();
 
   const fetchLocations = useCallback(async () => {
     try {
@@ -81,7 +85,7 @@ const LocationsList: React.FC = () => {
         <thead>
           <tr>
             <th>Nome</th>
-            <th>Capacidade</th>
+            <th>Capacidade (m³)</th>
             <th>Endereço</th>
             <th>Ações</th>
           </tr>
@@ -101,7 +105,13 @@ const LocationsList: React.FC = () => {
                   className={styles.manageButton}
                   onClick={() => navigateToEditLocation(location.id)}
                 >
-                  Editar
+                  {isMobile ? (
+                    <FontAwesomeIcon icon={faEdit} />
+                  ) : (
+                    <>
+                      <FontAwesomeIcon icon={faEdit} /> Editar
+                    </>
+                  )}
                 </button>
               </td>
             </tr>

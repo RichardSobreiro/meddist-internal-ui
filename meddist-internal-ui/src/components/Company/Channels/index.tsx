@@ -7,6 +7,9 @@ import { useSpinner } from "@/context/SpinnerContext";
 import { useToast } from "@/context/ToastContext";
 import { useRouter } from "next/router";
 import ClickableText from "@/components/general/ClickableText";
+import { useDevice } from "@/context/DeviceContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 interface Channel {
   id: string;
@@ -19,6 +22,7 @@ const ChannelsList: React.FC = () => {
   const { showSpinner, hideSpinner } = useSpinner();
   const { addToast } = useToast();
   const router = useRouter();
+  const { isMobile } = useDevice();
 
   const fetchChannels = useCallback(async () => {
     try {
@@ -84,7 +88,7 @@ const ChannelsList: React.FC = () => {
                   className={styles.manageButton}
                   onClick={() => navigateToEditChannel(channel.id)}
                 >
-                  Editar
+                  {isMobile ? <FontAwesomeIcon icon={faEdit} /> : <>Editar</>}
                 </button>
               </td>
             </tr>

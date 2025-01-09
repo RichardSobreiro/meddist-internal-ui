@@ -3,6 +3,7 @@
 import Spinner from "@/components/Spinner";
 import Toast from "@/components/Toast";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
+import { DeviceProvider } from "@/context/DeviceContext";
 import { SpinnerProvider, useSpinner } from "@/context/SpinnerContext";
 import { ToastProvider } from "@/context/ToastContext";
 import "@/styles/globals.css";
@@ -45,18 +46,20 @@ const AppContent: React.FC<AppProps> = ({
 export default function App({ Component, pageProps, router }: AppProps) {
   return (
     <SpinnerProvider>
-      <ToastProvider>
-        <AuthProvider>
-          <AuthGuard>
-            <AppContent
-              Component={Component}
-              pageProps={pageProps}
-              router={router}
-            />
-          </AuthGuard>
-        </AuthProvider>
-        <Toast />
-      </ToastProvider>
+      <DeviceProvider>
+        <ToastProvider>
+          <AuthProvider>
+            <AuthGuard>
+              <AppContent
+                Component={Component}
+                pageProps={pageProps}
+                router={router}
+              />
+            </AuthGuard>
+          </AuthProvider>
+          <Toast />
+        </ToastProvider>
+      </DeviceProvider>
     </SpinnerProvider>
   );
 }

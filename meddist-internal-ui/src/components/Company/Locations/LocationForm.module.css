@@ -18,6 +18,25 @@
   margin-bottom: 20px;
 }
 
+/* Back button styling */
+.backButton {
+  background-color: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-right: 10px;
+}
+
+.backButton:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
 /* Form styling */
 .form {
   display: flex;
@@ -75,7 +94,8 @@ select.input {
 
 .cancelButton {
   background-color: transparent;
-  border: 1px solid #ccc;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
   padding: 10px 20px;
   border-radius: 4px;
   font-size: 14px;
@@ -84,7 +104,8 @@ select.input {
 }
 
 .cancelButton:hover {
-  background-color: #f8f8f8;
+  background-color: var(--primary-color);
+  color: white;
 }
 
 .submitButton {

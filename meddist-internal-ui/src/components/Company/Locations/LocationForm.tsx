@@ -152,6 +152,12 @@ const LocationForm: React.FC<LocationFormProps> = ({
     <div className={styles.container}>
       <div className={styles.header}>
         <h1>{isEditMode ? "Editar Localização" : "Criar Localização"}</h1>
+        <button
+          className={styles.backButton}
+          onClick={() => router.push("/empresa/localizacoes")}
+        >
+          Voltar
+        </button>
       </div>
 
       <Formik
@@ -220,7 +226,7 @@ const LocationForm: React.FC<LocationFormProps> = ({
               </div>
 
               <div className={styles.formGroup}>
-                <label htmlFor="capacity">Capacidade</label>
+                <label htmlFor="capacity">Capacidade (m³)</label>
                 <Field
                   id="capacity"
                   name="capacity"
